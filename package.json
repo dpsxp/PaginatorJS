@@ -4,7 +4,7 @@
   "description": "A simple pagination template with some helpers",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -22,10 +22,16 @@
   },
   "homepage": "https://github.com/dpsxp/PaginatorJS",
   "devDependencies": {
-    "mocha": "~2.0.1",
-    "lodash": "~2.4.1",
-    "ejs": "~1.0.0",
     "chai": "~1.10.0",
-    "jsdoc": "~3.3.0-alpha10"
+    "ejs": "~1.0.0",
+    "gulp": "^3.8.10",
+    "gulp-jsdoc": "^0.1.4",
+    "gulp-jshint": "^1.9.0",
+    "gulp-mocha": "^2.0.0",
+    "gulp-uglify": "^1.0.1",
+    "jsdoc": "~3.3.0-alpha10",
+    "lodash": "~2.4.1",
+    "mocha": "~2.0.1",
+    "sinon": "^1.12.1"
   }
 }

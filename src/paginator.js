@@ -1,6 +1,3 @@
-/* jshint node: true */
-'use strict';
-
 // Lodash depedency
 var _ = require('lodash');
 
@@ -16,7 +13,7 @@ function Paginator(opts) {
   this.total = opts && opts.total || 0;
   this.perPage = opts && opts.perPage || 10;
   this.page = opts && opts.page || 1;
-  this.template = opts && opts.template;
+  this.template = opts && opts.template || _.template();
 
   // Some base calculation here
   this._calcPages();
@@ -81,12 +78,14 @@ Paginator.prototype = {
     if (this.page === this.pages.length - 1) {
       return [];
     } else {
-      return _.difference(pages, nextPages, [this.page]);
+      return _.difference(pages, nextPages);
     }
   },
 
   /**
-   * @returns {Array} the next 2 pages based on current page
+   * return a array with the next 2 pages
+   * without the first pages
+   * @returns {Array}
    */
   nextPages: function() {
     var pages = this.pages.slice(this.page + 1, this.page + 3);
@@ -123,13 +122,25 @@ Paginator.prototype = {
    * check if the distance between the first pages and previous pages is more than 3
    * @returns {Boolean}
    */
-  shouldShowBeforeGap: _.identity,
+  shouldShowBeforeGap: function () {
+    if (this.page <= this.firstPages().length) {
+      return false;
+    } else {
+      return this.prevPages().length > 0 && !_.contains(this.firstPages(), this.prevPages()[0] - 2);
+    }
+  },
 
   /**
    * check if the distance between the next pages and last pages is more than 3
    * @returns {Boolean}
    */
-  shouldShowAfterGap: _.identity,
+  shouldShowAfterGap: function () {
+    if (_.contains(this.lastPages(), this.page)) {
+      return false;
+    } else {
+      return this.nextPages().length > 0 && !_.contains(this.lastPages(), this.nextPages().pop() + 2);
+    }
+  },
 
   /**
    * calculates the current page when we change the perPage param
