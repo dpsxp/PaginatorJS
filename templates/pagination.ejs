@@ -1,0 +1,58 @@
+<div class="per-page-control">
+    <label for="per_page">Itens por página</label>
+    <select id="per_page" name="per_page" class="per-page-control-js">
+        <% ['10', '20', '30', '50', '100'].forEach(function (number) { %>
+        <option <%= number === per_page.toString() ? "selected" : "" %> value="<%= number %>"><%= number %></option>
+        <% }); %>
+    </select>
+</div>
+
+<div class="pagination">
+  <% if (this.isPrevDisabled()) { %>
+      <span class="previous_page disabled">Anterior</span>
+  <% } else { %>
+      <a class="previous_page" rel="previous" href="?page=<%= page - 1 %>">Anterior</a>
+  <% } %>
+
+  <% this.firstPages().forEach(function (number) { %>
+      <% if (number === page) { %>
+          <em class="current"><%= number %></em>
+      <% } else { %>
+          <a href="?page=<%= number %>"><%= number %></a>
+      <% } %>
+  <% }) %>
+
+  <% if (this.shouldShowBeforeGap()) { %>
+      <span class="gap">...</span>
+  <% } %>
+
+  <% this.prevPages().forEach(function (number) { %>
+     <a href="?page=<%= number %>"><%= number %></a>
+  <% }) %>
+
+  <% if (this.firstPages().indexOf(page) < 0) { %>
+      <em class="current"><%= page %></em>
+  <% } %>
+
+  <% this.nextPages().forEach(function (number) { %>
+      <a href="?page=<%= number %>"><%= number %></a>
+  <% }) %>
+
+  <% if (this.shouldShowAfterGap()) { %>
+      <span class="gap">...</span>
+  <% } %>
+
+  <% this.lastPages().forEach(function (number) { %>
+      <a href="?page=<%= number %>"><%= number %></a>
+  <% }) %>
+
+  <% if (this.isNextDisabled()) { %>
+      <span class="next_page disabled">Próxima</span>
+  <% } else { %>
+      <a class="next_page" rel="next" href="?page=<%= page + 1 %>">Próxima</a>
+  <% } %>
+</div>
+
+<div class="total-entries">
+    <p> Itens encontrados: <%= total %> </p>
+</div>
