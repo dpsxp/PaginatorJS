@@ -1,11 +1,11 @@
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var Paginator = require('../src/paginator');
+var PaginatorJS = require('../src/paginator');
 
-describe('Paginator', function () {
+describe('PaginatorJS', function () {
   describe('constructor', function () {
     it('should be configurable', function () {
-      this.paginator = new Paginator({
+      this.paginator = new PaginatorJS({
         total: 20,
         perPage: 10,
         page: 1
@@ -16,7 +16,7 @@ describe('Paginator', function () {
     });
 
     it('should have default config options', function () {
-      this.paginator = new Paginator();
+      this.paginator = new PaginatorJS();
       expect(this.paginator.page).to.equal(1);
       expect(this.paginator.perPage).to.equal(10);
       expect(this.paginator.total).to.equal(0);
@@ -25,7 +25,7 @@ describe('Paginator', function () {
 
   describe('helpers methods', function () {
     beforeEach(function() {
-      this.paginator = new Paginator({
+      this.paginator = new PaginatorJS({
         total: 200,
         perPage: 10,
         page: 1
@@ -159,7 +159,7 @@ describe('Paginator', function () {
 
   describe('private methods', function () {
     beforeEach(function() {
-      this.paginator = new Paginator({
+      this.paginator = new PaginatorJS({
         total: 200,
         perPage: 10,
         page: 1
@@ -175,7 +175,7 @@ describe('Paginator', function () {
 
     describe('_calcPages', function () {
       it('should create a array of pages based on total and perPage', function () {
-        this.paginator.updateTotal(100);
+        this.paginator.changeTotal(100);
         this.paginator.changePerPage(20);
         this.paginator._calcPages();
         expect(this.paginator.pages).to.eql([0, 1, 2, 3, 4, 5]);

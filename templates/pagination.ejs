@@ -2,7 +2,7 @@
     <label for="per_page">Itens por página</label>
     <select id="per_page" name="per_page" class="per-page-control-js">
         <% ['10', '20', '30', '50', '100'].forEach(function (number) { %>
-        <option <%= number === per_page.toString() ? "selected" : "" %> value="<%= number %>"><%= number %></option>
+        <option <%= number === perPage.toString() ? "selected" : "" %> value="<%= number %>"><%= number %></option>
         <% }); %>
     </select>
 </div>
@@ -30,7 +30,7 @@
      <a href="?page=<%= number %>"><%= number %></a>
   <% }) %>
 
-  <% if (this.firstPages().indexOf(page) < 0) { %>
+  <% if (this.firstPages().indexOf(page) < 0 && this.lastPages().indexOf(page) < 0 ) { %>
       <em class="current"><%= page %></em>
   <% } %>
 
@@ -43,7 +43,11 @@
   <% } %>
 
   <% this.lastPages().forEach(function (number) { %>
-      <a href="?page=<%= number %>"><%= number %></a>
+      <% if (number === page) { %>
+          <em class="current"><%= number %></em>
+      <% } else { %>
+          <a href="?page=<%= number %>"><%= number %></a>
+      <% } %>
   <% }) %>
 
   <% if (this.isNextDisabled()) { %>

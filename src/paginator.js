@@ -9,10 +9,10 @@ var _ = require('lodash');
  * @property {Number} [ perPage ]    - how much data per page
  * @property {Function} [ template ] - that returns a html string
  */
-function Paginator(opts) {
-  this.total = opts && opts.total || 0;
-  this.perPage = opts && opts.perPage || 10;
-  this.page = opts && opts.page || 1;
+function PaginatorJS(opts) {
+  this.changeTotal(opts && opts.total || 0);
+  this.changePerPage(opts && opts.perPage || 10);
+  this.changePage(opts && opts.page || 1);
   this.template = opts && opts.template || _.template();
 
   // Some base calculation here
@@ -20,13 +20,13 @@ function Paginator(opts) {
   this._calculateCurrentPage();
 }
 
-Paginator.prototype = {
+PaginatorJS.prototype = {
   /**
    * Set the current page
    * @param {Number} page - new page value
    */
   changePage: function(page) {
-    this.page = page;
+    this.page = parseInt(page, 10);
   },
 
   /**
@@ -34,7 +34,7 @@ Paginator.prototype = {
    * @param {Number} perPage - new perPage value
    */
   changePerPage: function(perPage) {
-    this.perPage = perPage;
+    this.perPage = parseInt(perPage, 10);
     this._calculateCurrentPage();
   },
 
@@ -42,8 +42,8 @@ Paginator.prototype = {
    * Set total param
    * @param {Number} total - new total value
    */
-  updateTotal: function(total) {
-    this.total = total;
+  changeTotal: function(total) {
+    this.total = parseInt(total, 10);
   },
 
   /**
@@ -197,4 +197,4 @@ Paginator.prototype = {
   }
 };
 
-module.exports = Paginator;
+module.exports = PaginatorJS;
