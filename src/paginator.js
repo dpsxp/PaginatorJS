@@ -62,38 +62,43 @@ Paginator.prototype = {
   },
 
   /**
-   * @returns {Array} the first 3 pages
+   * if current page is less or equal to 10
+   * returns the first 9 pages
+   * otherwise returns the first 3 pages
+   * @returns {Array}
    */
   firstPages: function() {
-    return this.pages.slice(1, 4);
+    if (this.page <= 10) {
+      return this.pages.slice(1, 10);
+    } else {
+      return this.pages.slice(1, 4);
+    }
   },
 
   /**
    * @returns {Array} the last 3 pages
    */
   lastPages: function() {
-    var pages = this.pages.slice(this.pages.length - 3);
-    var nextPages = _.difference(this.nextPages(), this.firstPages());
-
     if (this.page === this.pages.length - 1) {
       return [];
     } else {
-      return _.difference(pages, nextPages);
+      return _.difference(this.pages.slice(this.pages.length - 3), this.firstPages());
     }
   },
 
   /**
    * return a array with the next 2 pages
-   * without the first pages
    * @returns {Array}
    */
   nextPages: function() {
     var pages = this.pages.slice(this.page + 1, this.page + 3);
-    return _.difference(pages, this.firstPages());
+    return _.difference(pages, this.firstPages(), this.lastPages());
   },
 
   /**
-   * @returns {Array} the previous 2 pages based on current page
+   * the previous 2 pages based on current page
+   * without the first pages
+   * @returns {Array}
    */
   prevPages: function() {
     var pages = this.pages.slice(this.page - 2, this.page);
@@ -135,10 +140,10 @@ Paginator.prototype = {
    * @returns {Boolean}
    */
   shouldShowAfterGap: function () {
-    if (_.contains(this.lastPages(), this.page)) {
+    if (_.contains(this.lastPages(), this.page) || this.page === this.pages.length - 1) {
       return false;
     } else {
-      return this.nextPages().length > 0 && !_.contains(this.lastPages(), this.nextPages().pop() + 2);
+      return this.nextPages().length == 2 || (_.contains(this.firstPages(), this.page) && this.pages.length > this.firstPages().length);
     }
   },
 

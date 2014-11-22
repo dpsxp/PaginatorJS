@@ -57,35 +57,24 @@ describe('Paginator', function () {
     });
 
     describe('#nextPages', function () {
-      it('should return a array with the next 2 pages without the first pages or last pages based on current page', function () {
-        // First page
-        this.paginator.changePage(1);
-        expect(this.paginator.nextPages()).to.eql([]);
-
-        // Some random page
+      it('should return a array with the next 2 pages without firstPages and lastPages', function () {
         this.paginator.changePage(3);
-        expect(this.paginator.nextPages()).to.eql([4, 5]);
-
-        // Gets the last page
-        this.paginator.changePage(this.paginator.lastPages().pop());
         expect(this.paginator.nextPages()).to.eql([]);
+
+        this.paginator.changePage(13);
+        expect(this.paginator.nextPages()).to.eql([14, 15]);
       });
     });
 
-    describe('#prevPages', function () {
-      it('should return a array with the previous 2 pages without the first pages or last pages based on current page', function () {
+    describe('#prevPage', function () {
+      it('should return a array with the previous 2 pages based on current page without the firstPages ', function () {
         // First page
         this.paginator.changePage(1);
         expect(this.paginator.prevPages()).to.eql([]);
 
         // Some random page
-        this.paginator.changePage(6);
-        expect(this.paginator.prevPages()).to.eql([4, 5]);
-
-        // Gets the last page
-        var lastPage = this.paginator.lastPages().pop();
-        this.paginator.changePage(lastPage);
-        expect(this.paginator.prevPages()).to.eql([lastPage - 2, lastPage - 1]);
+        this.paginator.changePage(16);
+        expect(this.paginator.prevPages()).to.eql([14, 15]);
       });
     });
 
@@ -97,15 +86,26 @@ describe('Paginator', function () {
     });
 
     describe('#firstPages', function () {
-      it('should return a array with the first 3 pages', function () {
+      it('should return a array with the first 9 pages when current page minor or equal to 10', function () {
+        this.paginator.changePage(10);
+        var firstPages = this.paginator.firstPages();
+        expect(firstPages).to.eql([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+        this.paginator.changePage(9);
+        firstPages = this.paginator.firstPages();
+        expect(firstPages).to.eql([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+      });
+
+      it('should return a array with the first 3 pages when current pages is bigger than 10', function () {
+        this.paginator.changePage(11);
         var firstPages = this.paginator.firstPages();
         expect(firstPages).to.eql([1, 2, 3]);
       });
     });
 
     describe('#shouldShowBeforeGap', function () {
-      it('should return true when the distance between the first pages and previous pages is more than 3', function () {
-        this.paginator.changePage(8);
+      it('should return true when the distance between the first pages and previous pages is more than 3 and the page is greater than the this.firstPages().length', function () {
+        this.paginator.changePage(11);
         expect(this.paginator.shouldShowBeforeGap()).to.be.true;
       });
 
@@ -121,13 +121,16 @@ describe('Paginator', function () {
 
     describe('#shouldShowAfterGap', function () {
       it('should return true when the distance between the next pages and last pages is more than 3', function () {
-        var lastPage = this.paginator.lastPages().pop();
-        this.paginator.changePage(lastPage - 3);
-        expect(this.paginator.shouldShowAfterGap()).to.be.true;
+        var lastPage = this.paginator.pages.length - 1;
+        var _self = this;
+        this.paginator.pages.slice(1, lastPage - 5).forEach(function (number) {
+          _self.paginator.changePage(number);
+          expect(_self.paginator.shouldShowAfterGap()).to.be.true;
+        });
       });
 
       it('should return false when the distance between the next pages and last pages is less than 3', function () {
-        var lastPage = this.paginator.lastPages().pop();
+        var lastPage = this.paginator.pages.length - 1;
         this.paginator.changePage(lastPage);
         expect(this.paginator.shouldShowAfterGap()).to.be.false;
         this.paginator.changePage(lastPage - 1);
