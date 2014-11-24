@@ -1,8 +1,3 @@
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var _ = require('lodash');
-var PaginatorJS = require('../src/paginator');
-
 describe('PaginatorJS', function () {
   describe('constructor', function () {
     it('should be configurable', function () {
