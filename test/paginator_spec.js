@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
 var sinon = require('sinon');
+var _ = require('lodash');
 var PaginatorJS = require('../src/paginator');
 
 describe('PaginatorJS', function () {
@@ -66,27 +67,55 @@ describe('PaginatorJS', function () {
       });
     });
 
-    describe('#prevPage', function () {
+    describe('#prevPages', function () {
       it('should return a array with the previous 2 pages based on current page without the firstPages ', function () {
         // First page
         this.paginator.changePage(1);
         expect(this.paginator.prevPages()).to.eql([]);
 
         // Some random page
-        this.paginator.changePage(16);
-        expect(this.paginator.prevPages()).to.eql([14, 15]);
+        this.paginator.changePage(13);
+        expect(this.paginator.prevPages()).to.eql([11, 12]);
       });
+
+      it('should return a empty array when the prev pages is inside the lastPages', function () {
+        // Last pages
+        this.paginator.changePage(this.paginator.pages.length - 4);
+        expect(this.paginator.prevPages()).to.eql([]);
+
+        // Last pages
+        this.paginator.changePage(this.paginator.pages.length - 2);
+        expect(this.paginator.prevPages()).to.eql([]);
+      });
+
     });
 
     describe('#lastPages', function () {
+      it('should return a array with the last 6 pages when the current page is between the last 6 pages', function () {
+        var lastPages = [];
+
+        this.paginator.changePage(this.paginator.pages.length - 6);
+        lastPages = this.paginator.lastPages();
+        expect(lastPages).to.eql([15, 16, 17, 18, 19, 20]);
+
+        this.paginator.changePage(this.paginator.pages.length - 4);
+        lastPages = this.paginator.lastPages();
+        expect(lastPages).to.eql([15, 16, 17, 18, 19, 20]);
+
+        this.paginator.changePage(this.paginator.pages.length - 1);
+        lastPages = this.paginator.lastPages();
+        expect(lastPages).to.eql([15, 16, 17, 18, 19, 20]);
+      });
+
       it('should return a array with the last 3 pages', function () {
+        this.paginator.changePage(1);
         var lastPages = this.paginator.lastPages();
         expect(lastPages).to.eql([18, 19, 20]);
       });
     });
 
     describe('#firstPages', function () {
-      it('should return a array with the first 9 pages when current page minor or equal to 10', function () {
+      it('should return a array with the first 9 pages when current page is minor or equal to 10', function () {
         this.paginator.changePage(10);
         var firstPages = this.paginator.firstPages();
         expect(firstPages).to.eql([1, 2, 3, 4, 5, 6, 7, 8, 9]);
@@ -104,18 +133,21 @@ describe('PaginatorJS', function () {
     });
 
     describe('#shouldShowBeforeGap', function () {
-      it('should return true when the distance between the first pages and previous pages is more than 3 and the page is greater than the this.firstPages().length', function () {
-        this.paginator.changePage(11);
-        expect(this.paginator.shouldShowBeforeGap()).to.be.true;
+      it('should return true when the current page is not inside the firstPages', function () {
+        var _self = this;
+        _.range(this.paginator.pages.length - this.paginator.firstPages().length + 1, this.paginator.pages.length).forEach(function (number) {
+          _self.paginator.changePage(number);
+          expect(_self.paginator.shouldShowBeforeGap()).to.be.true;
+        });
       });
 
-      it('should return false when the distance between the first pages and previous pages is less than 3', function () {
-        this.paginator.changePage(3);
-        expect(this.paginator.shouldShowBeforeGap()).to.be.false;
-        this.paginator.changePage(4);
-        expect(this.paginator.shouldShowBeforeGap()).to.be.false;
-        this.paginator.changePage(5);
-        expect(this.paginator.shouldShowBeforeGap()).to.be.false;
+
+      it('should return false when the current page is inside the #firstPages', function () {
+        var _self = this;
+        _.range(1, 11).forEach(function (number) {
+          _self.paginator.changePage(number);
+          expect(_self.paginator.shouldShowBeforeGap()).to.be.false;
+        });
       });
     });
 

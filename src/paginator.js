@@ -11,13 +11,9 @@ var _ = require('lodash');
  */
 function PaginatorJS(opts) {
   this.changeTotal(opts && opts.total || 0);
-  this.changePerPage(opts && opts.perPage || 10);
   this.changePage(opts && opts.page || 1);
-  this.template = opts && opts.template || _.template();
-
-  // Some base calculation here
-  this._calcPages();
-  this._calculateCurrentPage();
+  this.changePerPage(opts && opts.perPage || 10);
+  this.template = opts && opts.template || _.template({});
 }
 
 PaginatorJS.prototype = {
@@ -36,6 +32,7 @@ PaginatorJS.prototype = {
   changePerPage: function(perPage) {
     this.perPage = parseInt(perPage, 10);
     this._calculateCurrentPage();
+    this._calcPages();
   },
 
   /**
@@ -76,11 +73,13 @@ PaginatorJS.prototype = {
   },
 
   /**
-   * @returns {Array} the last 3 pages
+   * return the last 3 pages when the current page is not between the last 6 pages
+   * otherwise returns the last 6 pages
+   * @returns {Array}
    */
   lastPages: function() {
-    if (this.page === this.pages.length - 1) {
-      return [];
+    if (this.page >= this.pages.length - 6) {
+      return _.difference(this.pages.slice(this.pages.length - 6), this.firstPages());
     } else {
       return _.difference(this.pages.slice(this.pages.length - 3), this.firstPages());
     }
@@ -88,6 +87,7 @@ PaginatorJS.prototype = {
 
   /**
    * return a array with the next 2 pages
+   * without the #firstPages and #lastPages
    * @returns {Array}
    */
   nextPages: function() {
@@ -97,14 +97,14 @@ PaginatorJS.prototype = {
 
   /**
    * the previous 2 pages based on current page
-   * without the first pages
+   * without the #firstPages and #lastPages
    * @returns {Array}
    */
   prevPages: function() {
     var pages = this.pages.slice(this.page - 2, this.page);
     var firstPages = this.firstPages();
     firstPages.unshift(0);
-    return _.difference(pages, firstPages);
+    return _.difference(pages, firstPages, this.lastPages());
   },
 
   /**
@@ -128,11 +128,7 @@ PaginatorJS.prototype = {
    * @returns {Boolean}
    */
   shouldShowBeforeGap: function () {
-    if (this.page <= this.firstPages().length) {
-      return false;
-    } else {
-      return this.prevPages().length > 0 && !_.contains(this.firstPages(), this.prevPages()[0] - 2);
-    }
+    return !_.contains(this.firstPages(), this.page) && !_.contains(this.firstPages(), this.page - 1, this.page - 2);
   },
 
   /**
@@ -140,11 +136,7 @@ PaginatorJS.prototype = {
    * @returns {Boolean}
    */
   shouldShowAfterGap: function () {
-    if (_.contains(this.lastPages(), this.page) || this.page === this.pages.length - 1) {
-      return false;
-    } else {
-      return this.nextPages().length == 2 || (_.contains(this.firstPages(), this.page) && this.pages.length > this.firstPages().length);
-    }
+    return !_.contains(this.lastPages(), this.page) && !_.contains(this.lastPages(), this.page + 1, this.page + 2);
   },
 
   /**
