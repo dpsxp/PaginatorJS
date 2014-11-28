@@ -42,6 +42,9 @@
      */
     changeTotal: function(total) {
       this.total = parseInt(total, 10);
+      if (this.perPage) {
+        this._calcPages();
+      }
     },
 
     /**
@@ -137,7 +140,7 @@
      * @returns {Boolean}
      */
     shouldShowAfterGap: function () {
-      return !_.contains(this.lastPages(), this.page) && !_.contains(this.lastPages(), this.page + 1, this.page + 2);
+      return this.lastPages().length > 0 && !_.contains(this.lastPages(), this.page) && !_.contains(this.lastPages(), this.page + 1, this.page + 2);
     },
 
     /**
@@ -157,8 +160,8 @@
      * @private
      */
     _calcPages: function() {
-      var pages = Math.round(this.total / this.perPage),
-      round = 0;
+      var pages = Math.round(this.total / this.perPage || 10),
+          round = 0;
 
       if (this.total < this.perPage) {
         this.pages = [0, 1];

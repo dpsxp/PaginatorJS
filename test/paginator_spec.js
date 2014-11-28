@@ -156,6 +156,16 @@ describe('PaginatorJS', function () {
         });
       });
 
+      it('should not show if the lastPages length is 0', function() {
+        // total pages is 7
+        this.paginator.changeTotal(70);
+        var _self = this;
+        this.paginator.pages.slice(1).forEach(function (number) {
+          _self.paginator.changePage(number);
+          expect(_self.paginator.shouldShowAfterGap()).to.be.false;
+        });
+      });
+
       it('should return false when the distance between the next pages and last pages is less than 3', function () {
         var lastPage = this.paginator.pages.length - 1;
         this.paginator.changePage(lastPage);
