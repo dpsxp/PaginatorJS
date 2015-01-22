@@ -23,7 +23,7 @@
      * @param {Number} page - new page value
      */
     changePage: function(page) {
-      this.page = parseInt(page, 10);
+      this.page = window.parseInt(page, 10);
     },
 
     /**
@@ -31,7 +31,7 @@
      * @param {Number} perPage - new perPage value
      */
     changePerPage: function(perPage) {
-      this.perPage = parseInt(perPage, 10);
+      this.perPage = window.parseInt(perPage, 10);
       this._calculateCurrentPage();
       this._calcPages();
     },
@@ -41,9 +41,14 @@
      * @param {Number} total - new total value
      */
     changeTotal: function(total) {
-      this.total = parseInt(total, 10);
+      this.total = window.parseInt(total, 10);
+
       if (this.perPage) {
         this._calcPages();
+      }
+
+      if (this.page) {
+        this._calculateCurrentPage();
       }
     },
 
@@ -148,6 +153,10 @@
      * @private
      */
     _calculateCurrentPage: function() {
+      if (this.total === 0) {
+        return;
+      }
+
       var round = this._roundUp(this.total, this.perPage);
 
       if (round < this.page) {
@@ -180,7 +189,7 @@
      */
     _roundUp: function(num, divisor) {
       var result = num / divisor,
-      decimal = parseInt(result.toFixed(1).split('.')[1], 10),
+      decimal = window.parseInt(result.toFixed(1).split('.')[1], 10),
       round = 0;
 
       if (decimal > 0 && decimal < 5) {

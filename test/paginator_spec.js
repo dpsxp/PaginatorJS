@@ -2,13 +2,13 @@ describe('PaginatorJS', function () {
   describe('constructor', function () {
     it('should be configurable', function () {
       this.paginator = new PaginatorJS({
-        total: 20,
+        total: 200,
         perPage: 10,
-        page: 1
+        page: 20
       });
-      expect(this.paginator.page).to.equal(1);
+      expect(this.paginator.page).to.equal(20);
       expect(this.paginator.perPage).to.equal(10);
-      expect(this.paginator.total).to.equal(20);
+      expect(this.paginator.total).to.equal(200);
     });
 
     it('should have default config options', function () {
