@@ -20,4 +20,4 @@ gulp.task('build', ['jshint', 'doc'], function () {
     .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('default', ['test']);
+gulp.task('default', ['build']);
