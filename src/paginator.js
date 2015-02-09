@@ -1,8 +1,10 @@
 // Lodash depedency
-(function (_) {
+(function (root, _) {
   'use strict';
 
   /**
+   * @name PaginatorJS
+   * @class
    * @constructor
    * @type {Object}
    * @property {Number} [ total ]      - total number
@@ -10,7 +12,7 @@
    * @property {Number} [ perPage ]    - how much data per page
    * @property {Function} [ template ] - that returns a html string
    */
-  window.PaginatorJS = function PaginatorJS(opts) {
+  root.PaginatorJS = function PaginatorJS(opts) {
     this.changeTotal(opts && opts.total || 0);
     this.changePage(opts && opts.page || 1);
     this.changePerPage(opts && opts.perPage || 10);
@@ -21,6 +23,7 @@
     /**
      * Set the current page
      * @param {Number} page - new page value
+     *
      */
     changePage: function(page) {
       this.page = window.parseInt(page, 10);
@@ -202,4 +205,4 @@
     }
   };
 
-}(window._));
+}(this, _));
