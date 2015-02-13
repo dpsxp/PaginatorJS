@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PaginatorJS</title>
+    <link rel="stylesheet" href="./assets/stylesheets/main.css" type="text/css">
+</head>
+<body>
+
+    <div id="pages" class="paginator-wrapper"></div>
+
+
+    <script type="text/template" id="page-template">
+        <div class="page-control">
+            <label for="per-page"></label>
+            <select id="per-page" name="per_page" class="per-page-control-js">
+                <% ['10', '20', '30', '50', '100'].forEach(function (number) { %>
+                    <option <%= number === perPage.toString() ? "selected" : "" %> value="<%= number %>">
+                        <%= number %>
+                    </option>
+                <% }); %>
+            </select>
+        </div>
+
+        <div class="pagination">
+          <% if (this.isPrevDisabled()) { %>
+              <span class="previous-page disabled">Previous</span>
+          <% } else { %>
+              <a class="previous-page" rel="previous" href="?page=<%= page - 1 %>">Previous</a>
+          <% } %>
+
+          <% this.firstPages().forEach(function (number) { %>
+              <% if (number === page) { %>
+                  <em class="current"><%= number %></em>
+              <% } else { %>
+                  <a class="page-link" href="?page=<%= number %>"><%= number %></a>
+              <% } %>
+          <% }) %>
+
+          <% if (this.shouldShowBeforeGap()) { %>
+              <span class="gap">...</span>
+          <% } %>
+
+          <% this.prevPages().forEach(function (number) { %>
+             <a class="page-link" href="?page=<%= number %>"><%= number %></a>
+          <% }) %>
+
+          <% if (this.firstPages().indexOf(page) < 0 && this.lastPages().indexOf(page) < 0 ) { %>
+              <em class="current"><%= page %></em>
+          <% } %>
+
+          <% this.nextPages().forEach(function (number) { %>
+              <a class="page-link" href="?page=<%= number %>"><%= number %></a>
+          <% }) %>
+
+          <% if (this.shouldShowAfterGap()) { %>
+              <span class="gap">...</span>
+          <% } %>
+
+          <% this.lastPages().forEach(function (number) { %>
+              <% if (number === page) { %>
+                  <em class="current"><%= number %></em>
+              <% } else { %>
+                  <a class="page-link" href="?page=<%= number %>"><%= number %></a>
+              <% } %>
+          <% }) %>
+
+          <% if (this.isNextDisabled()) { %>
+              <span class="next-page disabled">Next</span>
+          <% } else { %>
+              <a class="next-page" rel="next" href="?page=<%= page + 1 %>">Next</a>
+          <% } %>
+        </div>
+
+        <div class="total-entries">
+            <p> Total: <%= total %> </p>
+        </div>
+    </script>
+
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.min.js" /></script>
+    <script type="text/javascript" src="../src/paginator.js"></script>
+    <script type="text/javascript" src="./assets/javascripts/main.js">
+    </script>
+</body>
+</html>

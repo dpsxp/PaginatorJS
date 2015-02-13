@@ -1,0 +1,42 @@
+.paginator-wrapper {
+    width: 980px;
+    font-family: Helvetica;
+}
+
+.paginator-wrapper * {
+    box-sizing: border-box;
+}
+
+.paginator-wrapper .page-control,
+.paginator-wrapper .total-entries,
+.paginator-wrapper .pagination {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+
+
+.paginator-wrapper .total-entries {
+    margin-right: 0;
+}
+
+.paginator-wrapper .pagination .page-link,
+.paginator-wrapper .pagination .page-link:visited,
+.paginator-wrapper .pagination .previous-page,
+.paginator-wrapper .pagination .next-page,
+.paginator-wrapper .pagination .current {
+    width: 20px;
+    height: 20px;
+    background: #f3f3f3;
+    padding: 10px;
+    text-decoration: none;
+    color: #5C90ED;
+}
+
+.paginator-wrapper .pagination .previous-page.disabled,
+.paginator-wrapper .pagination .next-page.disabled,
+.paginator-wrapper .pagination .current {
+    color: #000;
+}
+
+
