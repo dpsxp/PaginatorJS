@@ -1,6 +1,8 @@
 .paginator-wrapper {
     width: 980px;
     font-family: Helvetica;
+    margin: auto;
+    text-align: center;
 }
 
 .paginator-wrapper * {
