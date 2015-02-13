@@ -91,9 +91,9 @@
      */
     lastPages: function() {
       if (this.page >= this.pages.length - 6) {
-        return _.difference(this.pages.slice(this.pages.length - 6), this.firstPages());
+        return _.difference(this.pages.slice(this.pages.length - 6), this.firstPages(), [0]);
       } else {
-        return _.difference(this.pages.slice(this.pages.length - 3), this.firstPages());
+        return _.difference(this.pages.slice(this.pages.length - 3), this.firstPages(), [0]);
       }
     },
 
@@ -191,9 +191,9 @@
      * @returns {Number}
      */
     _roundUp: function(num, divisor) {
-      var result = num / divisor,
-      decimal = window.parseInt(result.toFixed(1).split('.')[1], 10),
-      round = 0;
+      var result  = num / divisor,
+          decimal = window.parseInt(result.toFixed(1).split('.')[1], 10),
+          round   = 0;
 
       if (decimal > 0 && decimal < 5) {
         round = Math.round(result) + 1;

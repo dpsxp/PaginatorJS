@@ -107,6 +107,15 @@ describe('PaginatorJS', function () {
         var lastPages = this.paginator.lastPages();
         expect(lastPages).to.eql([18, 19, 20]);
       });
+
+      it('should not include 0', function () {
+        this.paginator.changePage(1);
+        this.paginator.changeTotal(200);
+        this.paginator.changePerPage(100);
+        var lastPages = this.paginator.lastPages();
+        expect(lastPages).to.eql([]);
+      });
+
     });
 
     describe('#firstPages', function () {
