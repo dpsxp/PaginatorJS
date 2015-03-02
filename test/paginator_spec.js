@@ -109,9 +109,9 @@ describe('PaginatorJS', function () {
       });
 
       it('should not include 0', function () {
-        this.paginator.changePage(1);
         this.paginator.changeTotal(200);
         this.paginator.changePerPage(100);
+        this.paginator.changePage(1);
         var lastPages = this.paginator.lastPages();
         expect(lastPages).to.eql([]);
       });

@@ -24,8 +24,10 @@
   "homepage": "https://github.com/dpsxp/PaginatorJS",
   "devDependencies": {
     "gulp": "^3.8.10",
+    "gulp-babel": "^4.0.0",
     "gulp-jsdoc": "^0.1.4",
     "gulp-jshint": "^1.9.0",
+    "gulp-rename": "^1.2.0",
     "gulp-uglify": "^1.0.1",
     "jsdoc-to-markdown": "0.6.3",
     "karma": "^0.12.25",

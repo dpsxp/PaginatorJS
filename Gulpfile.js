@@ -1,17 +1,16 @@
 var gulp = require('gulp');
+var babel = require('gulp-babel');
 var uglify = require('gulp-uglify');
-var jshint = require('gulp-jshint');
+var rename = require('gulp-rename');
 
-gulp.task('jshint', function () {
-  gulp.src('./src/*.js')
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'));
-});
-
-gulp.task('build', ['jshint'], function () {
-  gulp.src('./src/*.js')
+gulp.task('build', function () {
+  gulp.src('./src/*.es6')
+    .pipe(babel())
+    .pipe(rename('paginator.js'))
     .pipe(uglify())
     .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('default', ['build']);
+gulp.task('watch', function() {
+  gulp.watch('./src/*.es6', ['build']);
+});
